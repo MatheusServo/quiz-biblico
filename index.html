@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Bíblico Musical - Edição Harpa Cristã</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-panel {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-panel {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        
+        .coins-display {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--warning) 100%);
+            color: var(--dark);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        
+        .game-area {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .easy {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .medium {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .hard {
+            background-color: #e67e22;
+            color: white;
+        }
+        
+        .very-hard {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .question-text {
+            font-size: 1.5rem;
+            line-height: 1.4;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .option:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+        
+        .option-letter {
+            background: var(--secondary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .option.correct {
+            background: rgba(39, 174, 96, 0.7);
+            border-color: var(--success);
+        }
+        
+        .option.wrong {
+            background: rgba(231, 76, 60, 0.7);
+            border-color: var(--accent);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .btn-primary {
+            background: var(--gold);
+            color: var(--dark);
+        }
+        
+        .btn-primary:hover {
+            background: #ffed4e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(52, 152, 219, 0.8);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(52, 152, 219, 1);
+            transform: translateY(-3px);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #2ecc71;
+            transform: translateY(-3px);
+        }
+        
+        .hint-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(243, 156, 18, 0.15);
+            border-radius: 10px;
+            border-left: 4px solid var(--warning);
+            display: none;
+        }
+        
+        .hint-title {
+            font-weight: bold;
+            color: var(--warning);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .store-modal, .result-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .store-content, .result-content {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .store-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .store-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .store-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .item-price {
+            color: var(--gold);
+            font-weight: bold;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .music-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .intensity-meter {
+            flex-grow: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .intensity-level {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--success), var(--warning), var(--accent));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--success), var(--secondary));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .result-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+        
+        .result-score {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--gold);
+        }
+        
+        .result-stats {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .music-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .music-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .music-btn.active {
+            background: var(--secondary);
+        }
+        
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .achievement-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gold);
+            color: var(--dark);
+            padding: 10px 20px;
+            border-radius: 10px;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .achievement-badge.show {
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .game-area {
+                padding: 20px;
+            }
+            
+            .question-text {
+                font-size: 1.3rem;
+            }
+            
+            .btn {
+                min-width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .store-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <i class="fas fa-harp"></i>
+                Quiz Bíblico Musical
+                <i class="fas fa-music"></i>
+            </h1>
+            <p class="subtitle">Teste seu conhecimento e ganhe moedas ouvindo hinos da Harpa Cristã</p>
+            
+            <div class="coins-display">
+                <i class="fas fa-coins"></i>
+                <span id="coins">0</span> moedas
+            </div>
+        </header>
+        
+        <div class="stats-panel">
+            <div class="stat-item">
+                <div class="stat-label"><i class="fas fa-question-circle"></i> PERGUNTA</div>
+                <div class="stat-value" id="question-counter">1/200</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label"><i class="fas fa-heart"></i> VIDAS</div>
+                <div class="stat-value" id="lives">3</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label"><i class="fas fa-forward"></i> PULOS</div>
+                <div class="stat-value" id="skips">2</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label"><i class="fas fa-lightbulb"></i> DICAS</div>
+                <div class="stat-value" id="hints">1</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label"><i class="fas fa-star"></i> PONTOS</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress-bar"></div>
+        </div>
+        
+        <div class="game-area">
+            <div class="question-container">
+                <div class="difficulty easy" id="difficulty">FÁCIL</div>
+                <h2 class="question-text" id="question-text">Carregando pergunta...</h2>
+            </div>
+            
+            <div class="options-container" id="options-container">
+                <!-- Opções serão inseridas aqui via JavaScript -->
+            </div>
+            
+            <div class="hint-container" id="hint-container">
+                <div class="hint-title"><i class="fas fa-lightbulb"></i> DICA</div>
+                <div id="hint-text">Esta é a dica para a pergunta atual.</div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-secondary" id="store-btn">
+                    <i class="fas fa-store"></i> Loja de Moedas
+                </button>
+                <button class="btn btn-secondary" id="skip-btn">
+                    <i class="fas fa-forward"></i> Pular Pergunta
+                </button>
+                <button class="btn btn-secondary" id="hint-btn">
+                    <i class="fas fa-lightbulb"></i> Pedir Dica
+                </button>
+                <button class="btn btn-primary" id="next-btn" style="display: none;">
+                    <i class="fas fa-arrow-right"></i> Próxima Pergunta
+                </button>
+            </div>
+            
+            <div class="music-controls">
+                <div class="music-info">
+                    <div>
+                        <div>INTENSIDADE: <span id="music-intensity">BAIXA</span></div>
+                        <div class="intensity-meter">
+                            <div class="intensity-level" id="intensity-level"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="music-selector">
+                    <button class="music-btn active" data-music="harp1">
+                        <i class="fas fa-harp"></i> Harpa 1
+                    </button>
+                    <button class="music-btn" data-music="harp2">
+                        <i class="fas fa-harp"></i> Harpa 2
+                    </button>
+                    <button class="music-btn" data-music="organ">
+                        <i class="fas fa-church"></i> Órgão
+                    </button>
+                </div>
+                
+                <button class="btn btn-success" id="music-toggle">
+                    <i class="fas fa-volume-up"></i> Ativar Música
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal da Loja -->
+    <div class="store-modal" id="store-modal">
+        <div class="store-content">
+            <h2><i class="fas fa-store"></i> Loja de Moedas</h2>
+            <p>Use suas moedas para comprar recursos!</p>
+            
+            <div class="coins-display" style="margin: 20px auto;">
+                <i class="fas fa-coins"></i>
+                <span id="store-coins">0</span> moedas disponíveis
+            </div>
+            
+            <div class="store-items">
+                <div class="store-item" data-item="hint" data-price="50">
+                    <i class="fas fa-lightbulb fa-2x"></i>
+                    <h3>Dica Extra</h3>
+                    <p>+1 dica por pergunta</p>
+                    <div class="item-price">
+                        <i class="fas fa-coins"></i> 50 moedas
+                    </div>
+                </div>
+                
+                <div class="store-item" data-item="skip" data-price="75">
+                    <i class="fas fa-forward fa-2x"></i>
+                    <h3>Pulo Extra</h3>
+                    <p>+1 chance de pular</p>
+                    <div class="item-price">
+                        <i class="fas fa-coins"></i> 75 moedas
+                    </div>
+                </div>
+                
+                <div class="store-item" data-item="life" data-price="100">
+                    <i class="fas fa-heart fa-2x"></i>
+                    <h3>Vida Extra</h3>
+                    <p>+1 vida (máx. 5)</p>
+                    <div class="item-price">
+                        <i class="fas fa-coins"></i> 100 moedas
+                    </div>
+                </div>
+                
+                <div class="store-item" data-item="coins" data-price="200">
+                    <i class="fas fa-coins fa-2x"></i>
+                    <h3>Multiplicador</h3>
+                    <p>2x moedas por 10 perguntas</p>
+                    <div class="item-price">
+                        <i class="fas fa-coins"></i> 200 moedas
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="close-store">
+                <i class="fas fa-times"></i> Fechar Loja
+            </button>
+        </div>
+    </div>
+    
+    <!-- Modal de Resultados -->
+    <div class="result-modal" id="result-modal">
+        <div class="result-content">
+            <h2 class="result-title" id="result-title">PARABÉNS!</h2>
+            <div class="result-score" id="result-score">0</div>
+            
+            <div class="coins-display" style="margin: 20px auto; font-size: 1.5rem;">
+                <i class="fas fa-coins"></i>
+                <span id="result-coins">0</span> moedas ganhas!
+            </div>
+            
+            <div class="result-stats" id="result-stats">
+                <!-- Estatísticas serão inseridas aqui -->
+            </div>
+            
+            <button class="btn btn-primary" id="restart-btn">
+                <i class="fas fa-redo"></i> Jogar Novamente
+            </button>
+        </div>
+    </div>
+    
+    <!-- Badge de Conquista -->
+    <div class="achievement-badge" id="achievement-badge">
+        <i class="fas fa-trophy"></i>
+        <span id="achievement-text">Conquista Desbloqueada!</span>
+    </div>
+
+    <!-- Elementos de Áudio -->
+    <audio id="music-harp1" loop>
+        <!-- Harpa suave - música de fundo 1 -->
+        <source src="https://assets.mixkit.co/music/preview/mixkit-harp-angelic-strings-697.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="music-harp2" loop>
+        <!-- Harpa tranquila - música de fundo 2 -->
+        <source src="https://assets.mixkit.co/music/preview/mixkit-ethereal-fairy-sound-417.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="music-organ" loop>
+        <!-- Órgão suave - música de fundo 3 -->
+        <source src="https://assets.mixkit.co/music/preview/mixkit-church-organ-416.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="sound-correct">
+        <!-- Som de resposta correta -->
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="sound-wrong">
+        <!-- Som de resposta errada -->
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="sound-coin">
+        <!-- Som de moeda -->
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // ============================================
+        // CONFIGURAÇÃO INICIAL
+        // ============================================
+        
+        // Elementos do DOM
+        const elements = {
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            questionCounter: document.getElementById('question-counter'),
+            lives: document.getElementById('lives'),
+            skips: document.getElementById('skips'),
+            hints: document.getElementById('hints'),
+            score: document.getElementById('score'),
+            coins: document.getElementById('coins'),
+            skipBtn: document.getElementById('skip-btn'),
+            hintBtn: document.getElementById('hint-btn'),
+            nextBtn: document.getElementById('next-btn'),
+            hintContainer: document.getElementById('hint-container'),
+            hintText: document.getElementById('hint-text'),
+            difficulty: document.getElementById('difficulty'),
+            progressBar: document.getElementById('progress-bar'),
+            storeBtn: document.getElementById('store-btn'),
+            storeModal: document.getElementById('store-modal'),
+            closeStore: document.getElementById('close-store'),
+            storeCoins: document.getElementById('store-coins'),
+            resultModal: document.getElementById('result-modal'),
+            resultTitle: document.getElementById('result-title'),
+            resultScore: document.getElementById('result-score'),
+            resultCoins: document.getElementById('result-coins'),
+            resultStats: document.getElementById('result-stats'),
+            restartBtn: document.getElementById('restart-btn'),
+            achievementBadge: document.getElementById('achievement-badge'),
+            achievementText: document.getElementById('achievement-text'),
+            musicIntensity: document.getElementById('music-intensity'),
+            intensityLevel: document.getElementById('intensity-level'),
+            musicToggle: document.getElementById('music-toggle')
+        };
+
+        // Elementos de áudio
+        const audioElements = {
+            harp1: document.getElementById('music-harp1'),
+            harp2: document.getElementById('music-harp2'),
+            organ: document.getElementById('music-organ'),
+            correct: document.getElementById('sound-correct'),
+            wrong: document.getElementById('sound-wrong'),
+            coin: document.getElementById('sound-coin')
+        };
+
+        // Estado do jogo
+        const gameState = {
+            currentQuestionIndex: 0,
+            score: 0,
+            coins: 100, // Moedas iniciais
+            lives: 3,
+            maxLives: 5,
+            skips: 2,
+            hints: 1,
+            usedHints: false,
+            questionsAnswered: 0,
+            correctAnswers: 0,
+            currentQuestion: null,
+            questions: [],
+            gameOver: false,
+            musicEnabled: true,
+            currentMusic: 'harp1',
+            musicVolume: 0.3,
+            multiplierActive: false,
+            multiplierQuestionsLeft: 0,
+            achievements: {
+                firstCorrect: false,
+                streak5: false,
+                streak10: false,
+                perfectScore: false,
+                coinMaster: false
+            }
+        };
+
+        // ============================================
+        // BANCO DE PERGUNTAS (200 PERGUNTAS BÍBLICAS)
+        // ============================================
+        
+        const bibleQuestions = [
+            // Fáceis (nível 1 - 50 perguntas)
+            { question: "Quantos livros há no Novo Testamento?", options: ["27", "39", "46", "66"], answer: 0, hint: "É o mesmo número de letras do alfabeto inglês.", difficulty: 1 },
+            { question: "Quem construiu a arca?", options: ["Moisés", "Abraão", "Noé", "Salomão"], answer: 2, hint: "Ele reuniu um casal de cada animal.", difficulty: 1 },
+            { question: "Quem traiu Jesus?", options: ["Pedro", "Judas", "Tomé", "João"], answer: 1, hint: "Ele o traiu por 30 moedas de prata.", difficulty: 1 },
+            { question: "Qual é o primeiro livro da Bíblia?", options: ["Êxodo", "Gênesis", "Levítico", "Números"], answer: 1, hint: "Significa 'origem' ou 'começo'.", difficulty: 1 },
+            { question: "Quem foi jogado na cova dos leões?", options: ["Daniel", "José", "Davi", "Moisés"], answer: 0, hint: "Ele interpretava sonhos e visões.", difficulty: 1 },
+            { question: "Em quantos dias Deus criou o mundo?", options: ["5", "6", "7", "8"], answer: 2, hint: "No sétimo dia Ele descansou.", difficulty: 1 },
+            { question: "Quem foi a primeira mulher?", options: ["Sara", "Eva", "Rebeca", "Maria"], answer: 1, hint: "Foi criada da costela de Adão.", difficulty: 1 },
+            { question: "Quem foi o homem mais forte da Bíblia?", options: ["Sansão", "Golias", "Davi", "Salomão"], answer: 0, hint: "Sua força estava em seus cabelos.", difficulty: 1 },
+            { question: "Quem foi engolido por um grande peixe?", options: ["Pedro", "Paulo", "Jonas", "Tiago"], answer: 2, hint: "Ele tentou fugir de sua missão.", difficulty: 1 },
+            { question: "Quem foi o primeiro rei de Israel?", options: ["Davi", "Salomão", "Saul", "Josué"], answer: 2, hint: "Foi ungido pelo profeta Samuel.", difficulty: 1 },
+            { question: "Qual apóstolo negou Jesus três vezes?", options: ["João", "Pedro", "André", "Tiago"], answer: 1, hint: "Ele era pescador.", difficulty: 1 },
+            { question: "Quem foi a mãe de Jesus?", options: ["Isabel", "Maria", "Ana", "Salomé"], answer: 1, hint: "Era uma virgem quando Jesus foi concebido.", difficulty: 1 },
+            { question: "Quantos discípulos Jesus escolheu?", options: ["7", "10", "12", "15"], answer: 2, hint: "Incluindo Pedro, Tiago e João.", difficulty: 1 },
+            { question: "Qual era a profissão de Jesus?", options: ["Carpinteiro", "Pescador", "Pastor", "Professor"], answer: 0, hint: "Ele trabalhava com madeira.", difficulty: 1 },
+            { question: "Quem batizou Jesus?", options: ["Pedro", "João Batista", "André", "Ninguém"], answer: 1, hint: "Ele era primo de Jesus.", difficulty: 1 },
+            { question: "Qual era o nome do jardim onde Adão e Eva viviam?", options: ["Jardim do Éden", "Jardim de Getsêmani", "Jardim do Senhor", "Jardim do Paraíso"], answer: 0, hint: "Significa 'delícia' ou 'prazer'.", difficulty: 1 },
+            { question: "Quem matou Golias?", options: ["Saul", "Davi", "Jônatas", "Samuel"], answer: 1, hint: "Ele usou uma funda e uma pedra.", difficulty: 1 },
+            { question: "Qual era a cidade natal de Jesus?", options: ["Belém", "Nazaré", "Jerusalém", "Cafarnaum"], answer: 1, hint: "Ele era conhecido como 'Jesus de Nazaré'.", difficulty: 1 },
+            { question: "Quem foi vendido como escravo por seus irmãos?", options: ["Benjamim", "José", "Rúben", "Judá"], answer: 1, hint: "Ele se tornou governador do Egito.", difficulty: 1 },
+            { question: "Quem foi o pai de João Batista?", options: ["Zacarias", "José", "Joaquim", "Simeão"], answer: 0, hint: "Ele ficou mudo até o nascimento de João.", difficulty: 1 },
+            { question: "Qual era o nome do irmão de Moisés?", options: ["Arão", "Josué", "Calebe", "Miriã"], answer: 0, hint: "Ele serviu como porta-voz de Moisés diante do Faraó.", difficulty: 1 },
+            { question: "Quem foi a esposa de Abraão?", options: ["Sara", "Rebeca", "Raquel", "Lea"], answer: 0, hint: "Ela deu à luz Isaque em idade avançada.", difficulty: 1 },
+            { question: "Qual apóstolo duvidou da ressurreição de Jesus?", options: ["Pedro", "João", "Tomé", "André"], answer: 2, hint: "Ele disse que precisaria ver e tocar as feridas.", difficulty: 1 },
+            { question: "Quem foi o homem mais sábio da Bíblia?", options: ["Salomão", "Davi", "Moisés", "Paulo"], answer: 0, hint: "Ele pediu sabedoria a Deus em vez de riquezas.", difficulty: 1 },
+            { question: "Quantas pragas foram enviadas ao Egito?", options: ["7", "10", "12", "40"], answer: 1, hint: "A última foi a morte dos primogênitos.", difficulty: 1 },
+            { question: "Quem foi a mãe de Samuel?", options: ["Ana", "Ester", "Rute", "Débora"], answer: 0, hint: "Ela orou por um filho e o dedicou a Deus.", difficulty: 1 },
+            { question: "Qual era a profissão de Pedro antes de seguir Jesus?", options: ["Carpinteiro", "Pescador", "Coletor de impostos", "Fabricante de tendas"], answer: 1, hint: "Jesus disse que o faria 'pescador de homens'.", difficulty: 1 },
+            { question: "Quem foi o sucessor de Moisés?", options: ["Arão", "Josué", "Calebe", "Elias"], answer: 1, hint: "Ele liderou o povo na conquista de Jericó.", difficulty: 1 },
+            { question: "Quem foi rei de Israel depois de Saul?", options: ["Salomão", "Davi", "Roboão", "Jeroboão"], answer: 1, hint: "Ele derrotou Golias quando era jovem.", difficulty: 1 },
+            { question: "Quantos anos tinha Noé quando começou a chover para o dilúvio?", options: ["500", "600", "700", "800"], answer: 1, hint: "Ele viveu 950 anos no total.", difficulty: 1 },
+            { question: "Quem foi a rainha que salvou seu povo da destruição?", options: ["Ester", "Rute", "Débora", "Jezabel"], answer: 0, hint: "Seu tio era Mardoqueu.", difficulty: 1 },
+            { question: "Quem foi o juiz que derrotou os midianitas com apenas 300 homens?", options: ["Sansão", "Gideão", "Jefté", "Débora"], answer: 1, hint: "Ele testou Deus com um velo de lã.", difficulty: 1 },
+            { question: "Qual era a tribo de Jesus?", options: ["Judá", "Levi", "Benjamim", "Rúben"], answer: 0, hint: "Desta tribo viria o Messias.", difficulty: 1 },
+            { question: "Quem foi o profeta que enfrentou os profetas de Baal no Monte Carmelo?", options: ["Elias", "Eliseu", "Isaías", "Jeremias"], answer: 0, hint: "Ele desafiou 450 profetas de Baal.", difficulty: 1 },
+            { question: "Quantas pessoas estavam na arca de Noé?", options: ["4", "6", "8", "10"], answer: 2, hint: "Noé, sua esposa, seus três filhos e as esposas deles.", difficulty: 1 },
+            { question: "Quem sucedeu a Elias como profeta?", options: ["Isaías", "Jeremias", "Eliseu", "Jonas"], answer: 2, hint: "Ele recebeu uma porção dobrada do espírito de Elias.", difficulty: 1 },
+            { question: "Qual era a cidade onde Jesus foi crucificado?", options: ["Belém", "Nazaré", "Jerusalém", "Galileia"], answer: 2, hint: "Era a capital de Judá.", difficulty: 1 },
+            { question: "Quem foi o primeiro mártir cristão?", options: ["Pedro", "Paulo", "Estêvão", "Tiago"], answer: 2, hint: "Foi apedrejado até a morte.", difficulty: 1 },
+            { question: "Qual era o nome original de Abraão?", options: ["Abrão", "Natã", "Labão", "Melquisedeque"], answer: 0, hint: "Deus mudou seu nome quando fez uma aliança com ele.", difficulty: 1 },
+            { question: "Qual era a profissão de Mateus antes de seguir Jesus?", options: ["Pescador", "Carpinteiro", "Coletor de impostos", "Fariseu"], answer: 2, hint: "Também era conhecido como Levi.", difficulty: 1 },
+            { question: "Quem foi lançado na fornalha ardente?", options: ["Daniel", "Sadraque", "Jeremias", "Ezequiel"], answer: 1, hint: "Ele e seus dois amigos recusaram-se a adorar a estátua.", difficulty: 1 },
+            { question: "Qual destes NÃO é um livro do Pentateuco?", options: ["Gênesis", "Êxodo", "Deuteronômio", "Josué"], answer: 3, hint: "Pentateuco são os cinco primeiros livros da Bíblia.", difficulty: 1 },
+            { question: "Quem interpretou o sonho do Faraó sobre as vacas magras e gordas?", options: ["Moisés", "Daniel", "José", "Salomão"], answer: 2, hint: "Ele foi vendido como escravo por seus irmãos.", difficulty: 1 },
+            { question: "Quem foi o sumo sacerdote durante o ministério de Jesus?", options: ["Anás", "Caifás", "Joás", "Aarão"], answer: 1, hint: "Ele profetizou que Jesus morreria pelo povo.", difficulty: 1 },
+            { question: "Qual era o nome do imperador romano durante o nascimento de Jesus?", options: ["Augusto", "Tibério", "Calígula", "Nero"], answer: 0, hint: "Foi decretado um censo durante seu reinado.", difficulty: 1 },
+            { question: "Quem foi o rei que mandou matar todas as crianças de Belém?", options: ["Herodes, o Grande", "Pilatos", "Herodes Antipas", "Agripa"], answer: 0, hint: "Ele queria eliminar o 'rei dos judeus' recém-nascido.", difficulty: 1 },
+            { question: "Qual apóstolo foi crucificado de cabeça para baixo?", options: ["Pedro", "André", "Tiago", "Filipe"], answer: 0, hint: "Ele não se considerava digno de morrer como Jesus.", difficulty: 1 },
+            { question: "Quem escreveu a maior parte das epístolas do Novo Testamento?", options: ["Pedro", "João", "Paulo", "Tiago"], answer: 2, hint: "Ele era fariseu antes de se converter.", difficulty: 1 },
+            { question: "Qual era o nome do servo de Abraão que foi buscar uma esposa para Isaque?", options: ["Eliézer", "Lot", "Ismael", "Melquisedeque"], answer: 0, hint: "Ele encontrou Rebeca junto ao poço.", difficulty: 1 },
+            { question: "Qual profeta foi serrado ao meio?", options: ["Isaías", "Jeremias", "Ezequiel", "Daniel"], answer: 0, hint: "A tradição judaica diz que ele foi martirizado por Manassés.", difficulty: 1 },
+
+            // Médias (nível 2 - 50 perguntas)
+            { question: "Quantas vezes Jesus foi tentado no deserto?", options: ["2", "3", "4", "40"], answer: 1, hint: "As tentações foram: pedras em pães, jogar-se do pináculo, adorar Satanás.", difficulty: 2 },
+            { question: "Qual profeta foi arrebatado ao céu em um redemoinho?", options: ["Elias", "Enoque", "Ezequiel", "Isaías"], answer: 0, hint: "Seu sucessor foi Eliseu.", difficulty: 2 },
+            { question: "Quem foi o discípulo que Jesus amava?", options: ["Pedro", "João", "Tiago", "André"], answer: 1, hint: "Ele escreveu o Evangelho de João.", difficulty: 2 },
+            { question: "Qual era o nome do lugar onde Jesus foi crucificado?", options: ["Gólgota", "Getsêmani", "Calvário", "A e C estão corretas"], answer: 3, hint: "Significa 'lugar da caveira'.", difficulty: 2 },
+            { question: "Quem foi o profeta que se casou com Gomer?", options: ["Oseias", "Amós", "Miquéias", "Naum"], answer: 0, hint: "Seu casamento simbolizava a relação de Deus com Israel infiel.", difficulty: 2 },
+            { question: "Quantos anos tinha Josué quando morreu?", options: ["100", "110", "120", "130"], answer: 1, hint: "Ele sucedeu a Moisés na liderança de Israel.", difficulty: 2 },
+            { question: "Quem foi o rei que dançou diante da arca da aliança?", options: ["Saul", "Davi", "Salomão", "Josafá"], answer: 1, hint: "Sua esposa Mical o criticou por isso.", difficulty: 2 },
+            { question: "Qual era o nome da mulher que tocou na borda das vestes de Jesus e foi curada?", options: ["Maria", "Marta", "A mulher com fluxo de sangue", "A filha de Jairo"], answer: 2, hint: "Ela sofria havia 12 anos.", difficulty: 2 },
+            { question: "Quem foi o primeiro rei de Israel a ser assassinado?", options: ["Saul", "Davi", "Salomão", "Nadabe"], answer: 0, hint: "Ele se matou após ser ferido em batalha.", difficulty: 2 },
+            { question: "Qual era a cidade onde Paulo nasceu?", options: ["Jerusalém", "Tarso", "Roma", "Antioquia"], answer: 1, hint: "Ele era um cidadão romano.", difficulty: 2 },
+            { question: "Quem foi o discípulo que substituiu Judas Iscariotes?", options: ["Barnabé", "Matias", "Estêvão", "Timóteo"], answer: 1, hint: "Ele foi escolhido por sorteio.", difficulty: 2 },
+            { question: "Quantos capítulos tem o livro mais longo da Bíblia?", options: ["100", "119", "150", "176"], answer: 3, hint: "É o livro de Salmos.", difficulty: 2 },
+            { question: "Quem foi o profeta que profetizou sobre o 'vale de ossos secos'?", options: ["Ezequiel", "Isaías", "Jeremias", "Daniel"], answer: 0, hint: "Ele era um sacerdote exilado na Babilônia.", difficulty: 2 },
+            { question: "Qual era o nome do juiz que fez um voto imprudente e sacrificou sua filha?", options: ["Gideão", "Jefté", "Sansão", "Eli"], answer: 1, hint: "Ele prometeu sacrificar a primeira coisa que saísse de sua casa.", difficulty: 2 },
+            { question: "Quem foi a mãe de Ismael?", options: ["Sara", "Agar", "Rebeca", "Raquel"], answer: 1, hint: "Era serva de Sara.", difficulty: 2 },
+            { question: "Qual era o nome do irmão gêmeo de Esaú?", options: ["Isaque", "Jacó", "José", "Benjamim"], answer: 1, hint: "Ele comprou a primogenitura de Esaú por um prato de lentilhas.", difficulty: 2 },
+            { question: "Quem foi a esposa de Isaque?", options: ["Sara", "Rebeca", "Raquel", "Lea"], answer: 1, hint: "Ela era sobrinha de Abraão.", difficulty: 2 },
+            { question: "Quem foi o filho favorito de Jacó?", options: ["Rúben", "Judá", "José", "Benjamim"], answer: 2, hint: "Ele recebeu uma túnica colorida de presente.", difficulty: 2 },
+            { question: "Qual era o nome da esposa de Caim?", options: ["Adá", "Zilá", "Awan", "A Bíblia não diz"], answer: 3, hint: "O texto bíblico não fornece seu nome.", difficulty: 2 },
+            { question: "Quem foi o pai de Enoque?", options: ["Adão", "Set", "Caim", "Jarede"], answer: 3, hint: "Enoque andou com Deus e foi trasladado.", difficulty: 2 },
+            { question: "Qual era o nome do servo de Elias que ele treinou para ser profeta?", options: ["Geazi", "Jonas", "Eliseu", "Obadias"], answer: 2, hint: "Ele sucedeu a Elias como profeta principal.", difficulty: 2 },
+            { question: "Quem foi o profeta que desafiou Acabe e Jezabel?", options: ["Isaías", "Jeremias", "Elias", "Amós"], answer: 2, hint: "Ele profetizou uma seca de três anos e meio.", difficulty: 2 },
+            { question: "Qual era a profissão de Amós?", options: ["Sacerdote", "Profeta", "Pastor e agricultor", "Rei"], answer: 2, hint: "Ele cuidava de sicômoros e ovelhas.", difficulty: 2 },
+            { question: "Quem foi o rei que teve uma mão ressequida por tentar segurar a arca da aliança?", options: ["Saul", "Davi", "Uzá", "Ozias"], answer: 2, hint: "Ele tocou na arca quando os bois tropeçaram.", difficulty: 2 },
+            { question: "Qual era o nome do lugar onde Jacó lutou com o anjo?", options: ["Peniel", "Betel", "Siquém", "Maanaim"], answer: 0, hint: "Significa 'face de Deus'.", difficulty: 2 },
+            { question: "Quem foi o profeta que profetizou a destruição de Nínive?", options: ["Jonas", "Naum", "Habacuque", "Sofonias"], answer: 1, hint: "Seu nome significa 'confortador'.", difficulty: 2 },
+            { question: "Qual era a cidade onde Jesus realizou seu primeiro milagre?", options: ["Caná da Galileia", "Cafarnaum", "Betânia", "Nazaré"], answer: 0, hint: "Ele transformou água em vinho.", difficulty: 2 },
+            { question: "Quem foi o homem mais velho da Bíblia?", options: ["Adão", "Matusalém", "Noé", "Jó"], answer: 1, hint: "Ele viveu 969 anos.", difficulty: 2 },
+            { question: "Quantos filhos teve Jacó?", options: ["10", "12", "13", "14"], answer: 1, hint: "Eles se tornaram as doze tribos de Israel.", difficulty: 2 },
+            { question: "Quem foi o profeta que ficou mudo por um tempo?", options: ["Isaías", "Ezequiel", "Daniel", "Zacarias"], answer: 3, hint: "Ele era pai de João Batista.", difficulty: 2 },
+            { question: "Qual era o nome do lugar onde os israelitas receberam a Lei?", options: ["Monte Sinai", "Monte Carmelo", "Monte das Oliveiras", "Monte Hermom"], answer: 0, hint: "Moisés recebeu os Dez Mandamentos lá.", difficulty: 2 },
+            { question: "Quem foi o rei que teve lepra até o dia de sua morte?", options: ["Acaz", "Uzias", "Jotão", "Ezequias"], answer: 1, hint: "Ele queimou incenso no templo, função reservada aos sacerdotes.", difficulty: 2 },
+            { question: "Qual era a profissão de Paulo antes de sua conversão?", options: ["Pescador", "Carpinteiro", "Fabricante de tendas", "Fariseu"], answer: 3, hint: "Ele perseguia os cristãos antes de se converter.", difficulty: 2 },
+            { question: "Quantos anos durou o cativeiro babilônico?", options: ["40", "50", "70", "100"], answer: 2, hint: "Jeremias profetizou sobre esta duração.", difficulty: 2 },
+            { question: "Qual apóstolo foi morto por Herodes Agripa I com uma espada?", options: ["Tiago, filho de Zebedeu", "Pedro", "André", "Tiago, filho de Alfeu"], answer: 0, hint: "Ele era irmão de João.", difficulty: 2 },
+            { question: "Quem foi o sumo sacerdote que condenou Jesus?", options: ["Anás", "Caifás", "Nicodemos", "Gamaliel"], answer: 1, hint: "Era genro de Anás.", difficulty: 2 },
+            { question: "Qual era o nome do anjo que lutou com Jacó?", options: ["Miguel", "Gabriel", "Rafael", "Não é nomeado"], answer: 3, hint: "A Bíblia não dá um nome específico para este anjo.", difficulty: 2 },
+            { question: "Quantas vezes Pedro negou Jesus?", options: ["2", "3", "4", "5"], answer: 1, hint: "Jesus havia predito isso antes da crucificação.", difficulty: 2 },
+            { question: "Quem foi o rei de Judá que queimou seu filho em sacrifício?", options: ["Acaz", "Manassés", "Amom", "Jotão"], answer: 0, hint: "Ele reinou em Jerusalém por 16 anos.", difficulty: 2 },
+            { question: "Qual profeta foi enviado a Nínive?", options: ["Amós", "Jonas", "Naum", "Obadias"], answer: 1, hint: "Ele inicialmente tentou fugir para Társis.", difficulty: 2 },
+            { question: "Quem sucedeu a Salomão como rei de Israel?", options: ["Roboão", "Jeroboão", "Abias", "Asa"], answer: 0, hint: "Ele era filho de Salomão.", difficulty: 2 },
+            { question: "Qual dos evangelhos não é sinótico?", options: ["Mateus", "Marcos", "Lucas", "João"], answer: 3, hint: "Foi escrito pelo discípulo amado.", difficulty: 2 },
+            { question: "Quem foi o primeiro apóstolo a ser chamado por Jesus?", options: ["Pedro", "André", "João", "Tiago"], answer: 1, hint: "Ele era irmão de Pedro.", difficulty: 2 },
+            { question: "Qual destes NÃO é um dos Dez Mandamentos?", options: ["Não matarás", "Não furtarás", "Honra teu pai e tua mãe", "Amarás o próximo como a ti mesmo"], answer: 3, hint: "Este é o grande mandamento dado por Jesus.", difficulty: 2 },
+            { question: "Qual era o nome do pai de João Batista?", options: ["Zacarias", "José", "Joaquim", "Simeão"], answer: 0, hint: "Ele ficou mudo até o nascimento de João.", difficulty: 2 },
+            { question: "Quem foi arrebatado ao céu sem ver a morte?", options: ["Enoque", "Elias", "Ambos", "Nenhum"], answer: 2, hint: "Dois personagens bíblicos tiveram este privilégio.", difficulty: 2 },
+            { question: "Qual era o nome da montanha onde Moisés recebeu os Dez Mandamentos?", options: ["Sinai", "Carmelo", "Olivete", "Hermom"], answer: 0, hint: "Também chamada de Horebe.", difficulty: 2 },
+            { question: "Quem foi o primeiro filho de Adão e Eva?", options: ["Caim", "Abel", "Set", "Enos"], answer: 0, hint: "Ele matou seu irmão Abel.", difficulty: 2 },
+            { question: "Qual era o nome da mulher que se tornou esposa de Boaz?", options: ["Rute", "Noemi", "Orfa", "Ester"], answer: 0, hint: "Era uma moabita.", difficulty: 2 },
+            { question: "Quem foi jogado no poço por seus irmãos?", options: ["José", "Benjamim", "Judá", "Rúben"], answer: 0, hint: "Ele tinha uma túnica colorida.", difficulty: 2 },
+
+            // Difíceis (nível 3 - 50 perguntas)
+            { question: "Quantos anos tinha o rei Josias quando começou a reinar?", options: ["8", "12", "18", "25"], answer: 0, hint: "Ele foi um dos reis mais jovens de Judá.", difficulty: 3 },
+            { question: "Qual profeta foi enviado à casa de um oleiro para receber uma mensagem?", options: ["Jeremias", "Isaías", "Ezequiel", "Oséias"], answer: 0, hint: "Deus mostrou a ele um vaso sendo refeito.", difficulty: 3 },
+            { question: "Quem foi o rei que achou o livro da Lei no templo?", options: ["Ezequias", "Josias", "Joás", "Manassés"], answer: 1, hint: "Ele iniciou uma grande reforma religiosa.", difficulty: 3 },
+            { question: "Qual era o nome da mulher sunamita que hospedou Eliseu?", options: ["Abigail", "Débora", "A sunamita", "A Bíblia não dá seu nome"], answer: 3, hint: "Ela é conhecida apenas como 'a sunamita'.", difficulty: 3 },
+            { question: "Quantos anos tinha Samuel quando começou a servir no templo?", options: ["3", "5", "8", "12"], answer: 3, hint: "Ele foi dedicado a Deus por sua mãe Ana.", difficulty: 3 },
+            { question: "Quem foi o sumo sacerdote no tempo de Davi?", options: ["Abiatar", "Aimeleque", "Zadoque", "Abimeleque"], answer: 2, hint: "Ele apoiou Davi durante a rebelião de Absalão.", difficulty: 3 },
+            { question: "Qual rei de Judá queimou incenso no templo e ficou leproso?", options: ["Uzias", "Acaz", "Ezequias", "Manassés"], answer: 0, hint: "Ele usurpou funções sacerdotais.", difficulty: 3 },
+            { question: "Quantas vezes os israelitas circundaram Jericó antes das muralhas caírem?", options: ["7", "12", "13", "40"], answer: 2, hint: "Foram 6 dias uma vez por dia, e no sétimo dia 7 vezes.", difficulty: 3 },
+            { question: "Quem foi o primeiro juiz de Israel?", options: ["Otoniel", "Eúde", "Débora", "Gideão"], answer: 0, hint: "Ele era sobrinho de Calebe.", difficulty: 3 },
+            { question: "Qual era o nome do rio onde Naamã se banhou para ser curado da lepra?", options: ["Jordão", "Nilo", "Eufrates", "Tigre"], answer: 0, hint: "Ele inicialmente relutou em banhar-se neste rio.", difficulty: 3 },
+            { question: "Quantos anos tinha Isaque quando se casou com Rebeca?", options: ["20", "30", "40", "60"], answer: 2, hint: "Sara morreu quando ele tinha 37 anos.", difficulty: 3 },
+            { question: "Quem foi o pai de Matusalém?", options: ["Enoque", "Jarede", "Lameque", "Noé"], answer: 0, hint: "Enoque andou com Deus.", difficulty: 3 },
+            { question: "Qual era o nome da filha de Faraó que adotou Moisés?", options: ["Bateia", "Termutis", "Hatshepsut", "A Bíblia não dá seu nome"], answer: 3, hint: "Ela é chamada apenas de 'filha de Faraó'.", difficulty: 3 },
+            { question: "Quantos anos durou o reinado de Davi?", options: ["30", "40", "50", "60"], answer: 1, hint: "7 anos em Hebrom e 33 em Jerusalém.", difficulty: 3 },
+            { question: "Quem foi o profeta que confrontou Davi sobre seu pecado com Bate-Seba?", options: ["Natã", "Gade", "Aías", "Semaías"], answer: 0, hint: "Ele contou a parábola da ovelha.", difficulty: 3 },
+            { question: "Qual era o nome do vale onde Davi matou Golias?", options: ["Vale de Elá", "Vale de Sidim", "Vale de Hinom", "Vale de Josafá"], answer: 0, hint: "Fica entre Socó e Azeca.", difficulty: 3 },
+            { question: "Quantos capítulos tem o menor livro da Bíblia?", options: ["1", "2", "3", "4"], answer: 0, hint: "É a Segunda Epístola de João.", difficulty: 3 },
+            { question: "Quem foi o rei que construiu o segundo templo?", options: ["Ciro", "Dario", "Zorobabel", "Esdras"], answer: 2, hint: "Ele era governador de Judá.", difficulty: 3 },
+            { question: "Qual era o nome da montanha onde Abraão ofereceu Isaque?", options: ["Moriá", "Sinai", "Carmelo", "Tabor"], answer: 0, hint: "No mesmo lugar foi construído o templo.", difficulty: 3 },
+            { question: "Quantos anos tinha Noé quando começou a construir a arca?", options: ["480", "500", "600", "950"], answer: 1, hint: "Ele tinha 600 anos quando o dilúvio começou.", difficulty: 3 },
+            { question: "Quem foi o último juiz de Israel?", options: ["Sansão", "Eli", "Samuel", "Joel"], answer: 2, hint: "Ele também foi profeta e sacerdote.", difficulty: 3 },
+            { question: "Qual era o nome da cidade onde Jesus ressuscitou Lázaro?", options: ["Betânia", "Betesda", "Belém", "Nazaré"], answer: 0, hint: "Fica cerca de 3 km de Jerusalém.", difficulty: 3 },
+            { question: "Quantas cartas (epístolas) Paulo escreveu?", options: ["13", "14", "15", "16"], answer: 0, hint: "Incluindo Hebreus, alguns dizem 14.", difficulty: 3 },
+            { question: "Quem foi o autor do livro de Hebreus?", options: ["Paulo", "Barnabé", "Apolo", "Desconhecido"], answer: 3, hint: "A autoria é debatida entre estudiosos.", difficulty: 3 },
+            { question: "Qual era o nome do discípulo que era médico?", options: ["Lucas", "Marcos", "João", "Mateus"], answer: 0, hint: "Ele escreveu um evangelho e Atos.", difficulty: 3 },
+            { question: "Quantas vezes Jesus apareceu após sua ressurreição?", options: ["5", "10", "15", "Mais de 10 vezes"], answer: 3, hint: "As aparições são registradas nos evangelhos e em 1 Coríntios 15.", difficulty: 3 },
+            { question: "Quem foi o rei que sonhou com uma estátua de vários metais?", options: ["Nabucodonosor", "Belsazar", "Dario", "Ciro"], answer: 0, hint: "Daniel interpretou este sonho.", difficulty: 3 },
+            { question: "Qual era o nome do vale onde Josué ordenou que o sol parasse?", options: ["Aijalom", "Elá", "Hinom", "Josafá"], answer: 0, hint: "Josué lutou contra cinco reis amorreus.", difficulty: 3 },
+            { question: "Quantas vezes o galo cantou após Pedro negar Jesus?", options: ["1", "2", "3", "4"], answer: 1, hint: "Jesus havia dito que o galo cantaria duas vezes.", difficulty: 3 },
+            { question: "Quem foi o profeta que foi para uma aldeia chamada Sarepta?", options: ["Elias", "Eliseu", "Jonas", "Amós"], answer: 0, hint: "Ele foi sustentado por uma viúva.", difficulty: 3 },
+            { question: "Qual era o nome do amigo de Jó que falou primeiro?", options: ["Elifaz", "Bildade", "Zofar", "Eliú"], answer: 0, hint: "Ele era de Temã.", difficulty: 3 },
+            { question: "Quantos anos tinha Joaquim quando começou a reinar?", options: ["8", "18", "25", "31"], answer: 1, hint: "Ele reinou apenas 3 meses e 10 dias.", difficulty: 3 },
+            { question: "Quem foi o primeiro homem a ressuscitar dos mortos na Bíblia?", options: ["O filho da viúva de Sarepta", "O filho da sunamita", "Lázaro", "O filho da viúva de Naim"], answer: 0, hint: "Ressuscitado por Elias.", difficulty: 3 },
+            { question: "Qual era o nome da cidade onde os discípulos foram chamados cristãos pela primeira vez?", options: ["Antioquia", "Jerusalém", "Roma", "Corinto"], answer: 0, hint: "Na Síria.", difficulty: 3 },
+            { question: "Quantos salmos foram escritos por Davi?", options: ["73", "150", "Não se sabe ao certo", "Todos"], answer: 0, hint: "73 são atribuídos diretamente a Davi.", difficulty: 3 },
+            { question: "Quem foi o profeta que teve uma visão de um rolo voante?", options: ["Zacarias", "Ageu", "Malaquias", "Sofonias"], answer: 0, hint: "O rolo media 9 metros por 4,5 metros.", difficulty: 3 },
+            { question: "Qual era o nome do lugar onde Paulo foi mordido por uma cobra venenosa?", options: ["Malta", "Creta", "Chipre", "Sicília"], answer: 0, hint: "Os nativos pensaram que ele seria um deus.", difficulty: 3 },
+            { question: "Quantas vezes Elias orou para que chovesse novamente?", options: ["3", "7", "12", "40"], answer: 1, hint: "Ele orou sete vezes antes de ver uma nuvem do tamanho da mão de um homem.", difficulty: 3 },
+            { question: "Quem foi o rei que teve um sonho interpretado por Daniel sobre uma árvore?", options: ["Nabucodonosor", "Belsazar", "Dario", "Ciro"], answer: 0, hint: "Ele ficou louco por sete tempos.", difficulty: 3 },
+            { question: "Qual era o nome do sumo sacerdote no tempo de Jesus?", options: ["Anás", "Caifás", "Ambos", "Nenhum"], answer: 2, hint: "Anás era sogro de Caifás, ambos eram considerados sumo sacerdotes.", difficulty: 3 },
+            { question: "Quantos livros tem a Bíblia Protestante?", options: ["66", "73", "76", "80"], answer: 0, hint: "39 no Antigo Testamento e 27 no Novo Testamento.", difficulty: 3 },
+            { question: "Quem foi o autor do livro de Apocalipse?", options: ["João", "Paulo", "Pedro", "Tiago"], answer: 0, hint: "João, o apóstolo, na ilha de Patmos.", difficulty: 3 },
+            { question: "Qual era o nome do servo de Eliseu que ficou leproso?", options: ["Geazi", "Obadias", "Jonas", "Amós"], answer: 0, hint: "Ele aceitou presentes de Naamã.", difficulty: 3 },
+            { question: "Quantos anos tinha Enoque quando foi trasladado?", options: ["365", "500", "600", "900"], answer: 0, hint: "Um ano para cada dia do ano.", difficulty: 3 },
+            { question: "Quem foi o pai de Joaquim, rei de Judá?", options: ["Josias", "Jeoaquim", "Zedequias", "Jeconias"], answer: 1, hint: "Seu reinado durou apenas 3 meses e 10 dias.", difficulty: 3 },
+            { question: "Qual profeta teve visões de rodas dentro de rodas?", options: ["Daniel", "Ezequiel", "Zacarias", "Habacuque"], answer: 1, hint: "Ele também teve a visão do vale de ossos secos.", difficulty: 3 },
+            { question: "Quantos anos durou o ministério de Jesus?", options: ["1", "2", "3", "4"], answer: 2, hint: "Aproximadamente três anos e meio.", difficulty: 3 },
+            { question: "Quem foi o último profeta do Antigo Testamento?", options: ["Malaquias", "Zacarias", "Ageu", "João Batista"], answer: 0, hint: "Seu livro é o último do Antigo Testamento.", difficulty: 3 },
+            { question: "Qual era o nome do rei que deu a ordem para reconstruir Jerusalém?", options: ["Artaxerxes", "Ciro", "Dario", "Xerxes"], answer: 0, hint: "No vigésimo ano de seu reinado.", difficulty: 3 },
+
+            // Muito Difíceis (nível 4 - 50 perguntas)
+            { question: "Quantos anos tinha Abraão quando Isaque nasceu?", options: ["75", "86", "100", "120"], answer: 2, hint: "Sara tinha 90 anos.", difficulty: 4 },
+            { question: "Quem foi o autor do livro de Tiago?", options: ["Tiago, irmão de João", "Tiago, irmão de Jesus", "Tiago, filho de Alfeu", "Tiago, o Justo"], answer: 1, hint: "Ele era líder da igreja em Jerusalém.", difficulty: 4 },
+            { question: "Qual era o nome do rei que teve um sonho sobre uma estátua com pés de barro?", options: ["Nabucodonosor", "Belsazar", "Dario", "Ciro"], answer: 1, hint: "Filho de Nabucodonosor.", difficulty: 4 },
+            { question: "Quantas vezes os israelitas pecaram no deserto, segundo Hebreus?", options: ["7", "10", "40", "Não especificado"], answer: 1, hint: "Hebreus 3:9 menciona o número.", difficulty: 4 },
+            { question: "Quem foi o primeiro gentil convertido ao cristianismo?", options: ["Cornélio", "Lídia", "O eunuco etíope", "Simão, o curtidor"], answer: 0, hint: "Um centurião romano.", difficulty: 4 },
+            { question: "Qual era o nome do lugar onde os israelitas murmuraram por falta de água?", options: ["Refidim", "Meribá", "Massá", "Meribá e Massá"], answer: 3, hint: "Moisés feriu a rocha ali.", difficulty: 4 },
+            { question: "Quantas vezes é mencionado o nome de Satanás no Antigo Testamento?", options: ["3", "14", "18", "23"], answer: 1, hint: "Principalmente no livro de Jó.", difficulty: 4 },
+            { question: "Quem foi o sumo sacerdote durante o reinado de Davi?", options: ["Zadoque", "Abiatar", "Ambos", "Aimeleque"], answer: 2, hint: "Dois sumos sacerdotes serviram simultaneamente.", difficulty: 4 },
+            { question: "Qual era o nome do vale onde Acabe foi morto?", options: ["Jezreel", "Megido", "Armagedom", "Sidim"], answer: 0, hint: "Profetizado por Elias.", difficulty: 4 },
+            { question: "Quantos anos tinha Josias quando encontrou o livro da Lei?", options: ["18", "26", "31", "39"], answer: 1, hint: "No décimo oitavo ano de seu reinado.", difficulty: 4 },
+            { question: "Quem foi o profeta que predisse a fuga para o Egito?", options: ["Oséias", "Jeremias", "Isaías", "Miquéias"], answer: 0, hint: "Oséias 11:1.", difficulty: 4 },
+            { question: "Qual era o nome do servo de Abraão que foi buscar uma esposa para Isaque?", options: ["Eliézer", "Lot", "Ismael", "Melquisedeque"], answer: 0, hint: "Ele encontrou Rebeca junto ao poço.", difficulty: 4 },
+            { question: "Quantas vezes é mencionada a palavra 'amor' em 1 Coríntios 13?", options: ["0", "1", "9", "13"], answer: 0, hint: "O capítulo descreve o amor, mas não usa a palavra.", difficulty: 4 },
+            { question: "Quem foi o rei que removeu a serpente de bronze que Moisés havia feito?", options: ["Ezequias", "Josias", "Acaz", "Manassés"], answer: 0, hint: "Ele a destruiu porque o povo a estava adorando.", difficulty: 4 },
+            { question: "Qual era o nome do discípulo que era chamado de 'zelote'?", options: ["Simão", "Judas", "Tiago", "Bartolomeu"], answer: 0, hint: "Simão, o Zelote.", difficulty: 4 },
+            { question: "Quantos anos tinha Samuel quando foi chamado por Deus?", options: ["3", "8", "12", "Não especificado"], answer: 3, hint: "A Bíblia diz apenas que era 'jovem'.", difficulty: 4 },
+            { question: "Quem foi o autor da Epístola aos Hebreus?", options: ["Paulo", "Barnabé", "Apolo", "Desconhecido"], answer: 3, hint: "A autoria é disputada.", difficulty: 4 },
+            { question: "Qual era o nome do lugar onde Moisés viu a terra prometida antes de morrer?", options: ["Monte Nebo", "Monte Pisga", "Ambos", "Monte Sinai"], answer: 2, hint: "Nebo é o pico do Pisga.", difficulty: 4 },
+            { question: "Quantas vezes Jesus chorou na Bíblia?", options: ["1", "2", "3", "4"], answer: 2, hint: "Em João 11:35 e Lucas 19:41.", difficulty: 4 },
+            { question: "Quem foi o rei que consultou uma médium em En-Dor?", options: ["Saul", "Acabe", "Manassés", "Josias"], answer: 0, hint: "Ele consultou o espírito de Samuel.", difficulty: 4 },
+            { question: "Qual era o nome do anjo que lutou com Jacó?", options: ["Miguel", "Gabriel", "Rafael", "Não é nomeado"], answer: 3, hint: "A Bíblia não dá um nome específico.", difficulty: 4 },
+            { question: "Quantos salmos tem o título 'Salmo de Davi'?", options: ["73", "150", "Não se sabe", "Todos"], answer: 0, hint: "73 são atribuídos diretamente a Davi.", difficulty: 4 },
+            { question: "Quem foi o profeta que se casou com uma prostituta por ordem de Deus?", options: ["Jeremias", "Oseias", "Amós", "Miquéias"], answer: 1, hint: "Seu casamento simbolizava a relação de Deus com Israel.", difficulty: 4 },
+            { question: "Qual era o nome do servo de Elias que ele treinou para ser profeta?", options: ["Geazi", "Jonas", "Eliseu", "Obadias"], answer: 2, hint: "Ele sucedeu a Elias como profeta principal.", difficulty: 4 },
+            { question: "Quantos anos tinha o rei Joás quando começou a reinar?", options: ["7", "12", "22", "25"], answer: 0, hint: "Ele foi escondido no templo por 6 anos.", difficulty: 4 },
+            { question: "Quem foi o sumo sacerdote no tempo de Esdras?", options: ["Jesua", "Eliasibe", "Joiada", "Joiacim"], answer: 0, hint: "Ele ajudou na reconstrução do templo.", difficulty: 4 },
+            { question: "Qual era o nome do rio onde João batizava?", options: ["Jordão", "Eufrates", "Nilo", "Tigre"], answer: 0, hint: "No rio Jordão.", difficulty: 4 },
+            { question: "Quantas vezes Neemias orou no livro que leva seu nome?", options: ["7", "12", "Não especificado", "Várias vezes"], answer: 3, hint: "Ele era um homem de oração constante.", difficulty: 4 },
+            { question: "Quem foi o profeta que foi para uma aldeia chamada Sarepta?", options: ["Elias", "Eliseu", "Jonas", "Amós"], answer: 0, hint: "Ele foi sustentado por uma viúva.", difficulty: 4 },
+            { question: "Qual era o nome da cidade onde os discípulos foram chamados cristãos pela primeira vez?", options: ["Antioquia", "Jerusalém", "Roma", "Corinto"], answer: 0, hint: "Na Síria.", difficulty: 4 },
+            { question: "Quantos anos tinha Isaque quando Abraão o ofereceu em sacrifício?", options: ["5", "12", "25", "37"], answer: 3, hint: "Ele carregou a lenha para o holocausto.", difficulty: 4 },
+            { question: "Quem foi o rei que teve um sonho sobre uma árvore?", options: ["Nabucodonosor", "Belsazar", "Dario", "Ciro"], answer: 0, hint: "Ele ficou louco por sete tempos.", difficulty: 4 },
+            { question: "Qual era o nome do lugar onde Paulo foi mordido por uma cobra venenosa?", options: ["Malta", "Creta", "Chipre", "Sicília"], answer: 0, hint: "Os nativos pensaram que ele seria um deus.", difficulty: 4 },
+            { question: "Quantas vezes Elias orou para que chovesse novamente?", options: ["3", "7", "12", "40"], answer: 1, hint: "Ele orou sete vezes antes de ver uma nuvem do tamanho da mão de um homem.", difficulty: 4 },
+            { question: "Quem foi o rei que teve um sonho interpretado por Daniel sobre uma árvore?", options: ["Nabucodonosor", "Belsazar", "Dario", "Ciro"], answer: 0, hint: "Ele ficou louco por sete tempos.", difficulty: 4 },
+            { question: "Qual era o nome do sumo sacerdote no tempo de Jesus?", options: ["Anás", "Caifás", "Ambos", "Nenhum"], answer: 2, hint: "Anás era sogro de Caifás, ambos eram considerados sumo sacerdotes.", difficulty: 4 },
+            { question: "Quantos livros tem a Bíblia Protestante?", options: ["66", "73", "76", "80"], answer: 0, hint: "39 no Antigo Testamento e 27 no Novo Testamento.", difficulty: 4 },
+            { question: "Quem foi o autor do livro de Apocalipse?", options: ["João", "Paulo", "Pedro", "Tiago"], answer: 0, hint: "João, o apóstolo, na ilha de Patmos.", difficulty: 4 },
+            { question: "Qual era o nome do servo de Eliseu que ficou leproso?", options: ["Geazi", "Obadias", "Jonas", "Amós"], answer: 0, hint: "Ele aceitou presentes de Naamã.", difficulty: 4 },
+            { question: "Quantos anos tinha Enoque quando foi trasladado?", options: ["365", "500", "600", "900"], answer: 0, hint: "Um ano para cada dia do ano.", difficulty: 4 },
+            { question: "Quem foi o pai de Joaquim, rei de Judá?", options: ["Josias", "Jeoaquim", "Zedequias", "Jeconias"], answer: 1, hint: "Seu reinado durou apenas 3 meses e 10 dias.", difficulty: 4 },
+            { question: "Qual profeta teve visões de rodas dentro de rodas?", options: ["Daniel", "Ezequiel", "Zacarias", "Habacuque"], answer: 1, hint: "Ele também teve a visão do vale de ossos secos.", difficulty: 4 },
+            { question: "Quantos anos durou o ministério de Jesus?", options: ["1", "2", "3", "4"], answer: 2, hint: "Aproximadamente três anos e meio.", difficulty: 4 },
+            { question: "Quem foi o último profeta do Antigo Testamento?", options: ["Malaquias", "Zacarias", "Ageu", "João Batista"], answer: 0, hint: "Seu livro é o último do Antigo Testamento.", difficulty: 4 },
+            { question: "Qual era o nome do rei que deu a ordem para reconstruir Jerusalém?", options: ["Artaxerxes", "Ciro", "Dario", "Xerxes"], answer: 0, hint: "No vigésimo ano de seu reinado.", difficulty: 4 },
+            { question: "Quantos anos tinha Abraão quando Isaque nasceu?", options: ["75", "86", "100", "120"], answer: 2, hint: "Sara tinha 90 anos.", difficulty: 4 },
+            { question: "Quem foi o autor do livro de Tiago?", options: ["Tiago, irmão de João", "Tiago, irmão de Jesus", "Tiago, filho de Alfeu", "Tiago, o Justo"], answer: 1, hint: "Ele era líder da igreja em Jerusalém.", difficulty: 4 },
+            { question: "Qual era o nome do rei que teve um sonho sobre uma estátua com pés de barro?", options: ["Nabucodonosor", "Belsazar", "Dario", "Ciro"], answer: 1, hint: "Filho de Nabucodonosor.", difficulty: 4 },
+            { question: "Quantas vezes os israelitas pecaram no deserto, segundo Hebreus?", options: ["7", "10", "40", "Não especificado"], answer: 1, hint: "Hebreus 3:9 menciona o número.", difficulty: 4 }
+        ];
+
+        // ============================================
+        // FUNÇÕES DO JOGO
+        // ============================================
+
+        // Embaralhar array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Inicializar o jogo
+        function initGame() {
+            // Embaralhar perguntas
+            gameState.questions = shuffleArray([...bibleQuestions]).slice(0, 200);
+            gameState.currentQuestionIndex = 0;
+            gameState.score = 0;
+            gameState.coins = 100; // Moedas iniciais
+            gameState.lives = 3;
+            gameState.skips = 2;
+            gameState.hints = 1;
+            gameState.usedHints = false;
+            gameState.questionsAnswered = 0;
+            gameState.correctAnswers = 0;
+            gameState.gameOver = false;
+            gameState.multiplierActive = false;
+            gameState.multiplierQuestionsLeft = 0;
+            
+            // Resetar conquistas
+            gameState.achievements = {
+                firstCorrect: false,
+                streak5: false,
+                streak10: false,
+                perfectScore: false,
+                coinMaster: false
+            };
+
+            updateStats();
+            loadQuestion();
+            updateMusic();
+            
+            // Esconder modais
+            elements.storeModal.style.display = 'none';
+            elements.resultModal.style.display = 'none';
+        }
+
+        // Carregar pergunta
+        function loadQuestion() {
+            if (gameState.currentQuestionIndex >= gameState.questions.length || gameState.gameOver) {
+                endGame();
+                return;
+            }
+
+            gameState.currentQuestion = gameState.questions[gameState.currentQuestionIndex];
+            
+            // Atualizar interface
+            elements.questionText.textContent = gameState.currentQuestion.question;
+            elements.questionCounter.textContent = `${gameState.currentQuestionIndex + 1}/${gameState.questions.length}`;
+            
+            // Atualizar barra de progresso
+            const progress = ((gameState.currentQuestionIndex + 1) / gameState.questions.length) * 100;
+            elements.progressBar.style.width = `${progress}%`;
+            
+            // Atualizar dificuldade
+            updateDifficultyDisplay();
+            
+            // Limpar opções anteriores
+            elements.optionsContainer.innerHTML = '';
+            
+            // Criar opções
+            gameState.currentQuestion.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                    <div>${option}</div>
+                `;
+                optionElement.dataset.index = index;
+                optionElement.addEventListener('click', () => selectAnswer(index));
+                elements.optionsContainer.appendChild(optionElement);
+            });
+
+            // Resetar estado da pergunta
+            elements.nextBtn.style.display = 'none';
+            elements.hintContainer.style.display = 'none';
+            gameState.usedHints = false;
+            
+            // Atualizar música
+            updateMusic();
+        }
+
+        // Selecionar resposta
+        function selectAnswer(selectedIndex) {
+            if (gameState.gameOver) return;
+
+            const options = document.querySelectorAll('.option');
+            const correctIndex = gameState.currentQuestion.answer;
+            let earnedCoins = 0;
+
+            // Desabilitar opções
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+
+            // Mostrar respostas
+            options[correctIndex].classList.add('correct');
+            
+            if (selectedIndex !== correctIndex) {
+                options[selectedIndex].classList.add('wrong');
+                playSound('wrong');
+                gameState.lives--;
+                
+                if (gameState.lives <= 0) {
+                    gameState.lives = 0;
+                    gameState.gameOver = true;
+                    setTimeout(endGame, 1500);
+                }
+            } else {
+                playSound('correct');
+                
+                // Calcular pontos e moedas
+                const points = gameState.currentQuestion.difficulty * 10;
+                gameState.score += points;
+                gameState.correctAnswers++;
+                
+                // Calcular moedas ganhas
+                earnedCoins = calculateCoinsEarned();
+                gameState.coins += earnedCoins;
+                
+                // Mostrar moedas ganhas
+                showCoinAnimation(earnedCoins);
+                
+                // Verificar conquistas
+                checkAchievements();
+                
+                // Atualizar multiplicador
+                if (gameState.multiplierActive) {
+                    gameState.multiplierQuestionsLeft--;
+                    if (gameState.multiplierQuestionsLeft <= 0) {
+                        gameState.multiplierActive = false;
+                        showAchievement("Multiplicador de moedas terminou!");
+                    }
+                }
+            }
+
+            gameState.questionsAnswered++;
+            updateStats();
+            elements.nextBtn.style.display = 'flex';
+        }
+
+        // Calcular moedas ganhas
+        function calculateCoinsEarned() {
+            let baseCoins = gameState.currentQuestion.difficulty * 5;
+            
+            // Bônus por sequência de acertos
+            const streakBonus = Math.min(gameState.correctAnswers, 10) * 2;
+            
+            // Bônus por estar longe no jogo
+            const progressBonus = Math.floor(gameState.currentQuestionIndex / 10) * 3;
+            
+            // Multiplicador
+            const multiplier = gameState.multiplierActive ? 2 : 1;
+            
+            // Bônus por usar dica (se não usou)
+            const hintBonus = gameState.usedHints ? 0 : 5;
+            
+            let totalCoins = (baseCoins + streakBonus + progressBonus + hintBonus) * multiplier;
+            
+            return Math.max(1, totalCoins); // Mínimo de 1 moeda
+        }
+
+        // Mostrar animação de moedas
+        function showCoinAnimation(amount) {
+            const coinAnimation = document.createElement('div');
+            coinAnimation.className = 'coins-display';
+            coinAnimation.style.position = 'fixed';
+            coinAnimation.style.top = '50%';
+            coinAnimation.style.left = '50%';
+            coinAnimation.style.transform = 'translate(-50%, -50%)';
+            coinAnimation.style.zIndex = '1000';
+            coinAnimation.style.fontSize = '2rem';
+            coinAnimation.style.animation = 'fadeOut 2s forwards';
+            coinAnimation.innerHTML = `<i class="fas fa-coins"></i> +${amount} moedas`;
+            
+            document.body.appendChild(coinAnimation);
+            
+            // Adicionar estilo de animação
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                    100% { opacity: 0; transform: translate(-50%, -100%) scale(1.5); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            setTimeout(() => {
+                coinAnimation.remove();
+                style.remove();
+            }, 2000);
+            
+            playSound('coin');
+        }
+
+        // Pular pergunta
+        function skipQuestion() {
+            if (gameState.skips > 0 && !gameState.gameOver) {
+                gameState.skips--;
+                gameState.currentQuestionIndex++;
+                updateStats();
+                loadQuestion();
+            } else {
+                alert("Você não tem mais pulos disponíveis!");
+            }
+        }
+
+        // Mostrar dica
+        function showHint() {
+            if (gameState.hints > 0 && !gameState.usedHints && !gameState.gameOver) {
+                gameState.hints--;
+                gameState.usedHints = true;
+                elements.hintText.textContent = gameState.currentQuestion.hint;
+                elements.hintContainer.style.display = 'block';
+                updateStats();
+            } else if (gameState.usedHints) {
+                alert("Você já usou a dica para esta pergunta!");
+            } else {
+                alert("Você não tem mais dicas disponíveis!");
+            }
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            elements.lives.textContent = gameState.lives;
+            elements.skips.textContent = gameState.skips;
+            elements.hints.textContent = gameState.hints;
+            elements.score.textContent = gameState.score;
+            elements.coins.textContent = gameState.coins;
+            elements.storeCoins.textContent = gameState.coins;
+        }
+
+        // Atualizar display de dificuldade
+        function updateDifficultyDisplay() {
+            const difficulty = gameState.currentQuestion.difficulty;
+            elements.difficulty.textContent = getDifficultyText(difficulty);
+            elements.difficulty.className = 'difficulty ' + getDifficultyClass(difficulty);
+        }
+
+        function getDifficultyText(difficulty) {
+            switch(difficulty) {
+                case 1: return 'FÁCIL';
+                case 2: return 'MÉDIO';
+                case 3: return 'DIFÍCIL';
+                case 4: return 'MUITO DIFÍCIL';
+                default: return 'FÁCIL';
+            }
+        }
+
+        function getDifficultyClass(difficulty) {
+            switch(difficulty) {
+                case 1: return 'easy';
+                case 2: return 'medium';
+                case 3: return 'hard';
+                case 4: return 'very-hard';
+                default: return 'easy';
+            }
+        }
+
+        // ============================================
+        // SISTEMA DE MÚSICA
+        // ============================================
+
+        function updateMusic() {
+            if (!gameState.musicEnabled) return;
+            
+            // Parar todas as músicas
+            Object.values(audioElements).forEach(audio => {
+                if (audio !== audioElements.correct && 
+                    audio !== audioElements.wrong && 
+                    audio !== audioElements.coin) {
+                    audio.pause();
+                }
+            });
+            
+            // Tocar música atual
+            const currentAudio = audioElements[gameState.currentMusic];
+            if (currentAudio) {
+                currentAudio.volume = calculateMusicVolume();
+                currentAudio.play().catch(e => console.log("Erro ao tocar música:", e));
+            }
+            
+            // Atualizar intensidade
+            updateMusicIntensity();
+        }
+
+        function calculateMusicVolume() {
+            const baseVolume = gameState.musicVolume;
+            const difficulty = gameState.currentQuestion.difficulty;
+            
+            // Aumentar volume com a dificuldade
+            const intensityMultiplier = 0.5 + (difficulty * 0.125);
+            
+            return Math.min(baseVolume * intensityMultiplier, 0.7);
+        }
+
+        function updateMusicIntensity() {
+            const difficulty = gameState.currentQuestion.difficulty;
+            const intensityPercent = (difficulty / 4) * 100;
+            
+            elements.intensityLevel.style.width = `${intensityPercent}%`;
+            elements.musicIntensity.textContent = getIntensityText(difficulty);
+        }
+
+        function getIntensityText(difficulty) {
+            switch(difficulty) {
+                case 1: return 'SUAVE';
+                case 2: return 'MODERADA';
+                case 3: return 'ALTA';
+                case 4: return 'MUITO ALTA';
+                default: return 'SUAVE';
+            }
+        }
+
+        function toggleMusic() {
+            gameState.musicEnabled = !gameState.musicEnabled;
+            
+            if (gameState.musicEnabled) {
+                elements.musicToggle.innerHTML = '<i class="fas fa-volume-up"></i> Desativar Música';
+                updateMusic();
+            } else {
+                elements.musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i> Ativar Música';
+                Object.values(audioElements).forEach(audio => audio.pause());
+            }
+        }
+
+        function playSound(sound) {
+            if (!gameState.musicEnabled) return;
+            
+            const audio = audioElements[sound];
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(e => console.log("Erro ao tocar som:", e));
+            }
+        }
+
+        // ============================================
+        // SISTEMA DE LOJA
+        // ============================================
+
+        function openStore() {
+            elements.storeModal.style.display = 'flex';
+            elements.storeCoins.textContent = gameState.coins;
+        }
+
+        function closeStore() {
+            elements.storeModal.style.display = 'none';
+        }
+
+        function buyItem(item, price) {
+            if (gameState.coins >= price) {
+                gameState.coins -= price;
+                
+                switch(item) {
+                    case 'hint':
+                        gameState.hints++;
+                        showAchievement("Dica extra comprada!");
+                        break;
+                    case 'skip':
+                        gameState.skips++;
+                        showAchievement("Pulo extra comprado!");
+                        break;
+                    case 'life':
+                        if (gameState.lives < gameState.maxLives) {
+                            gameState.lives++;
+                            showAchievement("Vida extra comprada!");
+                        } else {
+                            alert("Você já tem o número máximo de vidas!");
+                            gameState.coins += price; // Devolve as moedas
+                            return;
+                        }
+                        break;
+                    case 'coins':
+                        gameState.multiplierActive = true;
+                        gameState.multiplierQuestionsLeft = 10;
+                        showAchievement("Multiplicador de moedas ativado por 10 perguntas!");
+                        break;
+                }
+                
+                updateStats();
+                playSound('coin');
+                closeStore();
+            } else {
+                alert("Moedas insuficientes!");
+            }
+        }
+
+        // ============================================
+        // SISTEMA DE CONQUISTAS
+        // ============================================
+
+        function checkAchievements() {
+            // Primeira resposta correta
+            if (!gameState.achievements.firstCorrect && gameState.correctAnswers === 1) {
+                gameState.achievements.firstCorrect = true;
+                showAchievement("Primeira resposta correta! +50 moedas");
+                gameState.coins += 50;
+            }
+            
+            // Sequência de 5 acertos
+            if (!gameState.achievements.streak5 && gameState.correctAnswers >= 5) {
+                gameState.achievements.streak5 = true;
+                showAchievement("Sequência de 5 acertos! +100 moedas");
+                gameState.coins += 100;
+            }
+            
+            // Sequência de 10 acertos
+            if (!gameState.achievements.streak10 && gameState.correctAnswers >= 10) {
+                gameState.achievements.streak10 = true;
+                showAchievement("Sequência de 10 acertos! +200 moedas");
+                gameState.coins += 200;
+            }
+            
+            // Acumulou 1000 moedas
+            if (!gameState.achievements.coinMaster && gameState.coins >= 1000) {
+                gameState.achievements.coinMaster = true;
+                showAchievement("Mestre das Moedas! +500 moedas");
+                gameState.coins += 500;
+            }
+            
+            updateStats();
+        }
+
+        function showAchievement(text) {
+            elements.achievementText.textContent = text;
+            elements.achievementBadge.classList.add('show');
+            
+            setTimeout(() => {
+                elements.achievementBadge.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================
+        // FIM DO JOGO
+        // ============================================
+
+        function endGame() {
+            gameState.gameOver = true;
+            
+            // Parar música
+            Object.values(audioElements).forEach(audio => audio.pause());
+            
+            // Calcular bônus final
+            const correctPercentage = Math.round((gameState.correctAnswers / gameState.questionsAnswered) * 100) || 0;
+            const finalCoinBonus = Math.floor(gameState.score / 10) + (correctPercentage * 2);
+            gameState.coins += finalCoinBonus;
+            
+            // Determinar título
+            let title, message;
+            if (correctPercentage >= 90) {
+                title = "EXCELENTE!";
+                message = "Você é um verdadeiro estudioso da Bíblia!";
+            } else if (correctPercentage >= 70) {
+                title = "MUITO BOM!";
+                message = "Seu conhecimento bíblico é impressionante!";
+            } else if (correctPercentage >= 50) {
+                title = "BOM TRABALHO!";
+                message = "Você tem um bom conhecimento da Bíblia!";
+            } else if (correctPercentage >= 30) {
+                title = "CONTINUE ESTUDANDO!";
+                message = "A prática leva à perfeição!";
+            } else {
+                title = "TENTE NOVAMENTE!";
+                message = "Não desanime, continue aprendendo!";
+            }
+            
+            // Mostrar modal de resultados
+            elements.resultTitle.textContent = title;
+            elements.resultScore.textContent = gameState.score;
+            elements.resultCoins.textContent = gameState.coins;
+            elements.resultStats.innerHTML = `
+                ${message}<br><br>
+                <strong>Estatísticas:</strong><br>
+                Perguntas respondidas: ${gameState.questionsAnswered}<br>
+                Acertos: ${gameState.correctAnswers} (${correctPercentage}%)<br>
+                Dificuldade média: ${calculateAverageDifficulty().toFixed(1)}/4<br>
+                Bônus final: +${finalCoinBonus} moedas<br><br>
+                <i>Use suas moedas na loja para melhorar no próximo jogo!</i>
+            `;
+            
+            elements.resultModal.style.display = 'flex';
+        }
+
+        function calculateAverageDifficulty() {
+            if (gameState.questionsAnswered === 0) return 0;
+            
+            let totalDifficulty = 0;
+            const answeredQuestions = gameState.questions.slice(0, gameState.questionsAnswered);
+            
+            answeredQuestions.forEach(question => {
+                totalDifficulty += question.difficulty;
+            });
+            
+            return totalDifficulty / gameState.questionsAnswered;
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        elements.skipBtn.addEventListener('click', skipQuestion);
+        elements.hintBtn.addEventListener('click', showHint);
+        elements.nextBtn.addEventListener('click', () => {
+            gameState.currentQuestionIndex++;
+            loadQuestion();
+        });
+        
+        elements.storeBtn.addEventListener('click', openStore);
+        elements.closeStore.addEventListener('click', closeStore);
+        
+        elements.restartBtn.addEventListener('click', initGame);
+        
+        elements.musicToggle.addEventListener('click', toggleMusic);
+        
+        // Event listeners para botões de música
+        document.querySelectorAll('.music-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remover classe active de todos
+                document.querySelectorAll('.music-btn').forEach(b => b.classList.remove('active'));
+                
+                // Adicionar ao botão clicado
+                this.classList.add('active');
+                
+                // Alterar música
+                gameState.currentMusic = this.dataset.music;
+                updateMusic();
+            });
+        });
+        
+        // Event listeners para itens da loja
+        document.querySelectorAll('.store-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const itemType = this.dataset.item;
+                const price = parseInt(this.dataset.price);
+                buyItem(itemType, price);
+            });
+        });
+
+        // Inicializar o jogo quando a página carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            // Permitir áudio após interação do usuário
+            document.body.addEventListener('click', () => {
+                Object.values(audioElements).forEach(audio => {
+                    audio.volume = 0;
+                    audio.play().then(() => {
+                        audio.pause();
+                        audio.currentTime = 0;
+                        audio.volume = gameState.musicVolume;
+                    }).catch(e => console.log("Configurando áudio..."));
+                });
+            }, { once: true });
+            
+            initGame();
+        });
+
+        // Prevenir que a música toque automaticamente em alguns navegadores
+        window.addEventListener('load', () => {
+            if (gameState.musicEnabled) {
+                setTimeout(updateMusic, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
